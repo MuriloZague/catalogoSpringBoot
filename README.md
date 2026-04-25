@@ -20,7 +20,7 @@ CREATE USER catalogo_user WITH PASSWORD 'catalogo123';
 GRANT ALL PRIVILEGES ON DATABASE catalogo_db TO catalogo_user;
 ```
 
-Se preferir, voce pode usar a interface do pgAdmin4 para criar seu banco!.
+Se preferir, voce pode usar a interface do pgAdmin4 para criar seu banco e usar o usuário padrão do postgres.
 
 ## 3. Configurar o arquivo application.properties
 
