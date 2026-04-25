@@ -50,7 +50,6 @@ spring.jpa.properties.hibernate.format_sql=true
 
 Se a conexao com o banco estiver correta:
 
-- a aplicacao sobe sem erros;
 - as tabelas `tb_produto`, `tb_categoria` e `tb_usuario` sao criadas/atualizadas automaticamente.
 
 Se der erro de conexao, confira:
