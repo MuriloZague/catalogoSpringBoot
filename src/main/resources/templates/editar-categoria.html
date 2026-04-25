@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Categoria</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0 0 12px 0;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d7dce2;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .field-error {
+            color: #b33939;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .input-error {
+            border-color: #b33939 !important;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button, a {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button {
+            background: #27ae60;
+            color: #fff;
+        }
+
+        a {
+            background: #dfe6ed;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Editar Categoria</h1>
+    <form th:action="@{/categorias/atualizar}" method="post" th:object="${categoria}" novalidate data-validate="true">
+        <input type="hidden" th:field="*{idCategoria}">
+
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" th:field="*{nome}" minlength="3" required>
+
+        <div class="field-error" th:if="${erro}" th:text="${erro}"></div>
+        <div class="field-error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+
+        <div class="actions">
+            <button type="submit">Atualizar</button>
+            <a href="/dashboard">Cancelar</a>
+        </div>
+    </form>
+</div>
+<script>
+    (function () {
+        const form = document.querySelector('form[data-validate="true"]');
+        if (!form) return;
+
+        const fields = form.querySelectorAll('input, select, textarea');
+
+        function removeError(field) {
+            const existing = field.parentElement.querySelector('.field-error.client-error');
+            if (existing) existing.remove();
+            field.classList.remove('input-error');
+        }
+
+        function showError(field, message) {
+            removeError(field);
+            const error = document.createElement('div');
+            error.className = 'field-error client-error';
+            error.textContent = message;
+            field.parentElement.appendChild(error);
+            field.classList.add('input-error');
+        }
+
+        function validateField(field) {
+            removeError(field);
+            if (field.type === 'hidden') return true;
+
+            const value = (field.value || '').trim();
+            const minLength = field.getAttribute('minlength');
+
+            if (field.hasAttribute('required') && !value) {
+                showError(field, 'Campo obrigatorio.');
+                return false;
+            }
+
+            if (minLength && value && value.length < Number(minLength)) {
+                showError(field, 'Minimo de ' + minLength + ' caracteres.');
+                return false;
+            }
+
+            return true;
+        }
+
+        form.addEventListener('submit', function (event) {
+            let isValid = true;
+            fields.forEach(function (field) {
+                if (!validateField(field)) isValid = false;
+            });
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        fields.forEach(function (field) {
+            field.addEventListener('input', function () {
+                validateField(field);
+            });
+        });
+    })();
+</script>
+</body>
+</html>

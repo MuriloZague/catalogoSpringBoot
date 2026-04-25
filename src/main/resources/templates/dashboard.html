@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(130deg, #eef7ff 0%, #f9fbff 45%, #eefcf4 100%);
+            color: #22313f;
+            min-height: 100vh;
+        }
+
+        nav {
+            background-color: #2d99d4;
+            padding: 14px 30px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .nav-left,
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-user {
+            color: #eaf6ff;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: #1f6fa5;
+            color: #fff;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-logout:hover {
+            background: #195b86;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .topbar h1 {
+            font-size: 1.7rem;
+            color: #1d3557;
+        }
+
+        .topbar a {
+            text-decoration: none;
+            background: #2d99d4;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(17, 38, 68, 0.1);
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            color: #1e3f66;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: #fff;
+        }
+
+        .btn-green { background: #27ae60; }
+        .btn-blue { background: #3498db; }
+        .btn-indigo { background: #4f6dff; }
+        .btn-orange { background: #f39c12; }
+        .btn-red { background: #e74c3c; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ebf0f5;
+            text-align: left;
+        }
+
+        th {
+            color: #375a7f;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .msg {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #1f7a3c;
+        }
+
+        .msg-error {
+            color: #b33939;
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .nav-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .topbar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-left">
+        <a href="/produtos">FATEC - CATALOGO</a>
+        <a href="/dashboard">Dashboard</a>
+    </div>
+    <div class="nav-right">
+        <span class="nav-user">Usuario: <strong sec:authentication="name"></strong></span>
+        <form th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="btn-logout" type="submit">Sair</button>
+        </form>
+    </div>
+</nav>
+<div class="container" sec:authorize="hasRole('ADMIN')">
+    <div class="topbar">
+        <h1>Dashboard Administrativo</h1>
+        <a href="/produtos">Voltar para Catalogo</a>
+    </div>
+
+    <div class="card">
+        <h2>Acoes Administrativas</h2>
+        <div class="actions">
+            <a class="btn btn-green" href="/produtos/novo">Adicionar Novo Produto</a>
+            <a class="btn btn-blue" href="/cadastro-usuario">Cadastrar Usuario</a>
+            <a class="btn btn-blue" href="/produtos">Listar Produtos</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Gestao de Categorias</h2>
+        <div class="actions">
+            <a class="btn btn-indigo" href="/categorias/nova">Adicionar Categoria</a>
+        </div>
+
+        <div class="msg" th:if="${param.categoriaSucesso}">Categoria criada com sucesso.</div>
+        <div class="msg" th:if="${param.categoriaAtualizada}">Categoria atualizada com sucesso.</div>
+        <div class="msg" th:if="${param.categoriaExcluida}">Categoria excluida com sucesso.</div>
+        <div class="msg msg-error" th:if="${param.categoriaErro}">Nao foi possivel excluir a categoria. Verifique se existem produtos vinculados.</div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th style="width: 260px;">Acoes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${categorias}">
+                <td th:text="${c.nome}"></td>
+                <td>
+                    <a class="btn btn-orange" th:href="@{/categorias/editar/{id}(id=${c.idCategoria})}">Alterar</a>
+                    <a class="btn btn-red" th:href="@{/categorias/excluir/{id}(id=${c.idCategoria})}" onclick="return confirm('Deseja excluir esta categoria?');">Excluir</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

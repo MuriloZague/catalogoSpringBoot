@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Produtos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        nav {
+            background-color: #3498db;
+            padding: 14px 30px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            opacity: 0.85;
+        }
+
+        .nav-left,
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-user {
+            color: #eaf6ff;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: #1f6fa5;
+            color: #fff;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-logout:hover {
+            background: #195b86;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 30px;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            letter-spacing: 0.5px;
+        }
+
+        table {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-top: 20px;
+        }
+
+        thead {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        thead th {
+            padding: 14px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #ecf0f1;
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #eaf4fd;
+        }
+
+        tbody td {
+            padding: 13px 20px;
+            font-size: 0.95rem;
+        }
+
+        tbody td:nth-child(2) {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .textColor {
+            color: red !important;
+        }
+
+        .btn-editar,
+        .btn-remover {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-editar {
+            background-color: #3498db;
+            color: #fff;
+            margin-right: 6px;
+        }
+
+        .btn-editar:hover {
+            background-color: #2178b0;
+        }
+
+        .btn-remover {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        .btn-remover:hover {
+            background-color: #c0392b;
+        }
+
+        .acoes-form {
+            display: inline;
+        }
+
+        input,
+        select {
+            padding: 0.4rem;
+            border-radius: 6px;
+            border: 1px solid #cdd5df;
+        }
+
+        .filtros {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-filtrar {
+            background: #1d84c6;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.45rem 0.6rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .nav-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            table {
+                max-width: 100%;
+            }
+
+            .filtros {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-left">
+        <a href="/produtos">FATEC - CATALOGO</a>
+        <a href="/dashboard" sec:authorize="hasRole('ADMIN')" style="margin-left: 18px;">Dashboard</a>
+    </div>
+    <div class="nav-right">
+        <span class="nav-user">Usuario: <strong sec:authentication="name"></strong></span>
+        <form th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="btn-logout" type="submit">Sair</button>
+        </form>
+    </div>
+</nav>
+<h1>Lista de Produtos</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Valor</th>
+        <th>Data de Cadastro</th>
+        <th>Ações</th>
+        <th>
+            <form method="get" action="/produtos" class="filtros">
+                <input type="text" name="busca" placeholder="pesquise" th:value="${busca}">
+                <select name="categoriaId">
+                    <option value="">Todas categorias</option>
+                    <option th:each="c : ${categorias}"
+                            th:value="${c.idCategoria}"
+                            th:text="${c.nome}"
+                            th:selected="${categoriaId != null and categoriaId == c.idCategoria}"></option>
+                </select>
+                <button type="submit" class="btn-filtrar">Filtrar</button>
+            </form>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${produtos}">
+        <td th:text="${p.nome}"></td>
+        <td th:text="${p.categoria.nome}"></td>
+        <td th:text="${p.valor}" th:classappend="${p.valor > 1000 ? 'textColor' : null}"></td>
+        <td th:text="${#temporals.format(p.dataCadastro, 'dd/MM/yyyy HH:mm:ss')}"></td>
+        <td>
+            <a class="btn-editar" th:href="@{/produtos/editar/{id}(id=${p.idProduto})}" sec:authorize="hasRole('ADMIN')">Editar</a>
+
+            <a class="btn-remover" th:href="@{/produtos/excluir/{id}(id=${p.idProduto})}"
+            onclick="return confirm('Quer mesmo exlcuir?')" sec:authorize="hasRole('ADMIN')"
+            >Remover</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
