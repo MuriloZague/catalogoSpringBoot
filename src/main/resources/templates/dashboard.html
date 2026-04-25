@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Administrativo</title>
     <style>
+        :root {
+            --bg: #f5f8fc;
+            --surface: #ffffff;
+            --surface-2: #f8fbff;
+            --text: #223042;
+            --muted: #66788d;
+            --primary: #3f6f96;
+            --primary-soft: #5f89ab;
+            --border: #dbe4ed;
+            --danger: #c95454;
+            --warning: #cc9550;
+            --success: #338c61;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,26 +26,27 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(130deg, #eef7ff 0%, #f9fbff 45%, #eefcf4 100%);
-            color: #22313f;
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background: linear-gradient(180deg, #f8fafd 0%, #f3f6fb 100%);
+            color: var(--text);
             min-height: 100vh;
         }
 
         nav {
-            background-color: #2d99d4;
+            background-color: var(--surface);
             padding: 14px 30px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         nav a {
-            color: #fff;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
         .nav-left,
@@ -42,13 +57,13 @@
         }
 
         .nav-user {
-            color: #eaf6ff;
+            color: var(--muted);
             font-size: 0.9rem;
             font-weight: 600;
         }
 
         .btn-logout {
-            background: #1f6fa5;
+            background: var(--primary);
             color: #fff;
             border: none;
             padding: 7px 12px;
@@ -60,7 +75,7 @@
         }
 
         .btn-logout:hover {
-            background: #195b86;
+            background: var(--primary-soft);
         }
 
         .container {
@@ -78,12 +93,12 @@
 
         .topbar h1 {
             font-size: 1.7rem;
-            color: #1d3557;
+            color: #2a3b4e;
         }
 
         .topbar a {
             text-decoration: none;
-            background: #2d99d4;
+            background: var(--primary-soft);
             color: #fff;
             padding: 10px 14px;
             border-radius: 8px;
@@ -91,9 +106,10 @@
         }
 
         .card {
-            background: #fff;
+            background: var(--surface);
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(17, 38, 68, 0.1);
+            box-shadow: 0 8px 24px rgba(46, 66, 95, 0.08);
+            border: 1px solid var(--border);
             padding: 20px;
             margin-bottom: 18px;
         }
@@ -101,7 +117,7 @@
         .card h2 {
             font-size: 1.15rem;
             margin-bottom: 14px;
-            color: #1e3f66;
+            color: #304659;
         }
 
         .actions {
@@ -117,28 +133,33 @@
             border-radius: 8px;
             padding: 10px 16px;
             color: #fff;
+            transition: background-color 0.2s ease;
         }
 
-        .btn-green { background: #27ae60; }
-        .btn-blue { background: #3498db; }
-        .btn-indigo { background: #4f6dff; }
-        .btn-orange { background: #f39c12; }
-        .btn-red { background: #e74c3c; }
+        .btn-green { background: var(--success); }
+        .btn-blue { background: var(--primary-soft); }
+        .btn-indigo { background: #6f86b3; }
+        .btn-orange { background: var(--warning); }
+        .btn-red { background: #d16b6b; }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         th, td {
             padding: 12px;
-            border-bottom: 1px solid #ebf0f5;
+            border-bottom: 1px solid #edf2f7;
             text-align: left;
         }
 
         th {
-            color: #375a7f;
+            color: #415b74;
+            background: var(--surface-2);
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.4px;
@@ -147,11 +168,11 @@
         .msg {
             margin-top: 10px;
             font-size: 0.9rem;
-            color: #1f7a3c;
+            color: var(--success);
         }
 
         .msg-error {
-            color: #b33939;
+            color: var(--danger);
         }
 
         @media (max-width: 700px) {

@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Produtos</title>
     <style>
+        :root {
+            --bg: #f5f7fb;
+            --surface: #ffffff;
+            --surface-2: #f8fbff;
+            --text: #1f2a37;
+            --muted: #637083;
+            --primary: #3f6f96;
+            --primary-soft: #5e89ac;
+            --border: #dbe3ec;
+            --danger: #c95454;
+            --success: #2f8a5f;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,25 +25,25 @@
         }
 
         nav {
-            background-color: #3498db;
+            background-color: var(--surface);
             padding: 14px 30px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         nav a {
-            color: #fff;
+            color: var(--primary);
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.98rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.4px;
             text-transform: uppercase;
         }
 
         nav a:hover {
-            opacity: 0.85;
+            color: var(--primary-soft);
         }
 
         .nav-left,
@@ -41,13 +54,13 @@
         }
 
         .nav-user {
-            color: #eaf6ff;
-            font-size: 0.9rem;
+            color: var(--muted);
+            font-size: 0.88rem;
             font-weight: 600;
         }
 
         .btn-logout {
-            background: #1f6fa5;
+            background: var(--primary);
             color: #fff;
             border: none;
             padding: 7px 12px;
@@ -56,56 +69,58 @@
             font-weight: 700;
             cursor: pointer;
             text-transform: uppercase;
+            transition: background-color 0.2s ease;
         }
 
         .btn-logout:hover {
-            background: #195b86;
+            background: var(--primary-soft);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background: linear-gradient(180deg, #f7f9fc 0%, #f3f6fa 100%);
+            color: var(--text);
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 30px;
-            margin-top: 30px;
-            font-size: 1.8rem;
-            color: #2c3e50;
-            letter-spacing: 0.5px;
+            margin: 26px 0 22px;
+            font-size: 1.65rem;
+            color: #2a3a4b;
+            letter-spacing: 0.3px;
         }
 
         table {
             width: 100%;
-            max-width: 700px;
+            max-width: 940px;
             margin: 0 auto;
             border-collapse: collapse;
-            background-color: #fff;
-            border-radius: 8px;
+            background-color: var(--surface);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            margin-top: 20px;
+            box-shadow: 0 8px 22px rgba(41, 61, 90, 0.08);
+            border: 1px solid var(--border);
+            margin: 0 auto 24px;
         }
 
         thead {
-            background-color: #3498db;
-            color: #fff;
+            background-color: var(--surface-2);
+            color: #33485f;
         }
 
         thead th {
             padding: 14px 20px;
             text-align: left;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid var(--border);
         }
 
         tbody tr {
-            border-bottom: 1px solid #ecf0f1;
-            transition: background-color 0.2s;
+            border-bottom: 1px solid #edf2f7;
+            transition: background-color 0.2s ease;
         }
 
         tbody tr:last-child {
@@ -113,7 +128,7 @@
         }
 
         tbody tr:hover {
-            background-color: #eaf4fd;
+            background-color: #f7fbff;
         }
 
         tbody td {
@@ -122,12 +137,12 @@
         }
 
         tbody td:nth-child(2) {
-            color: #27ae60;
+            color: var(--success);
             font-weight: 600;
         }
 
         .textColor {
-            color: red !important;
+            color: var(--danger) !important;
         }
 
         .btn-editar,
@@ -144,22 +159,22 @@
         }
 
         .btn-editar {
-            background-color: #3498db;
+            background-color: var(--primary-soft);
             color: #fff;
             margin-right: 6px;
         }
 
         .btn-editar:hover {
-            background-color: #2178b0;
+            background-color: var(--primary);
         }
 
         .btn-remover {
-            background-color: #e74c3c;
+            background-color: #d46b6b;
             color: #fff;
         }
 
         .btn-remover:hover {
-            background-color: #c0392b;
+            background-color: var(--danger);
         }
 
         .acoes-form {
@@ -168,9 +183,11 @@
 
         input,
         select {
-            padding: 0.4rem;
+            padding: 0.48rem 0.58rem;
             border-radius: 6px;
-            border: 1px solid #cdd5df;
+            border: 1px solid var(--border);
+            color: var(--text);
+            background: var(--surface);
         }
 
         .filtros {
@@ -180,13 +197,18 @@
         }
 
         .btn-filtrar {
-            background: #1d84c6;
+            background: var(--primary-soft);
             color: #fff;
             border: none;
             border-radius: 6px;
-            padding: 0.45rem 0.6rem;
+            padding: 0.5rem 0.78rem;
             font-weight: 600;
             cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-filtrar:hover {
+            background: var(--primary);
         }
 
         @media (max-width: 768px) {
